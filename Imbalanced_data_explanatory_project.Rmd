@@ -5,13 +5,21 @@ date: "2023-08-24"
 output: html_document
 ---
 
-Techniques for Handling Imbalanced Data for Machine Learning Classifiers in R
+
+#####move the library() all to one setup code chunk? look at how other posts organize things
+#####Consider using We instead of I for the worked example so it feels more like a tutorial
+
+
+
+4 Techniques for Analyzing Handling Imbalanced Data with Machine Learning Classifiers in R
+
+In this tutorial, I'll discuss what it means for a dataset to be imbalanced, why this is a problem for machine learning classifiers, and 4 commonly used techniques that can be used to solve this problem in R. Then, I'll present a worked example demonstrating how to implement these techniques and assess their impact on the usefulness of machine learning models.
 
 What are Classification Tasks?
 
 Classification tasks are a widely encountered problem in data science. In a classification task, we want to predict which of several distinct categories different cases fall into. Classification tasks appear in many different business and research situations.
 
-For example, you may want to be able to classify emails as "spam" or "not spam", diagnose patients as having a certain disease or not, determine whether a transaction is fraudulent or not, or predict whether a loan will be paid back. In all of these examples, machine learning tools can be used to predict the class that each case belongs to (i.e. the target variable) based on other data associated with each case (i.e. predictor variables).
+For example, you may want to be able to classify emails as "spam" or "not spam", diagnose patients as having a certain disease or not, determine whether a transaction is fraudulent or not, or predict whether a loan will be paid back. In all of these examples, machine learning tools can be used to predict the class that each case belongs to (i.e. the target variable) based on other data associated with each case (i.e. predictor variables, or features).
 
 What is Imbalanced Data, and Why Does it Matter?
 
@@ -190,11 +198,12 @@ ggplot(fetal_data, aes(x = fetal_health, fill = fetal_health)) +
   geom_bar() +
   scale_x_discrete(labels=c('normal', 'suspect', 'pathological')) +
   labs(x = 'fetal health classification') +
+  theme_classic() +
   theme(legend.position = "none")
 
 ```
 
-Next, we will perform a few variable selection steps. Typically, predictor variables that have little variance (i.e. mostly repeated values) contain little information about the target variable and so should be excluded from analysis. In this case, our target variable is imbalanced, which means that predictors that are strongly associated with the target variable are likely to also have a strongly skewed distribution. A strongly skewed distribution can mean lots of repeated values, so we want to be somewhat cautious about throwing out variables just because of lots of repeated values. For this reason, We will only drop two variables have extremely high proportions of repeated values.
+Next, we will perform a few variable selection steps. Typically, predictor variables that have little variance (e.g. mostly repeated values) contain little information about the target variable and so should be excluded from analysis. In this case, our target variable is imbalanced, which means that predictors that are strongly associated with the target variable are likely to also have a strongly skewed distribution. For discrete variables, a strongly skewed distribution can mean lots of repeated values, so we want to be somewhat cautious about throwing out variables just because of lots of repeated values. For this reason, We will only drop two variables have extremely high proportions of repeated values.
 
 Here, we look at the distribution of the variables with the most extreme numbers of repeated values. These two variables are dropped from the dataset further down.
 
@@ -206,7 +215,7 @@ hist(fetal_data$severe_decelerations)
 
 ```
 
-We also want to eliminate redundant variables (i.e. predictors that are strongly correlated with one another). Dropping redundant variables enhances model accuracy and computation time, while losing trivial amounts of information. After excluding the two variables with extreme numbers of repeated values, we can look at the correlelogram for the remaining continuous predictors. We can see that histogram median is strongly correlated with histogram mean and mode. We will keep histogram median and drop histogram mean and mode since median has the strongest correlations with the variables in this set, minimizing information loss. Histogram width and histogram minimum are strongly correlated, so we drop histogram minimum.
+We also want to eliminate redundant variables (i.e. predictors that are strongly correlated with one another). Dropping redundant variables enhances model accuracy and computation time, while losing trivial amounts of information. After excluding the two variables with extreme numbers of repeated values, we can look at the correlogram for the remaining continuous predictors. We can see that histogram median is strongly correlated with histogram mean and mode. We will keep histogram median and drop histogram mean and mode since median has the strongest correlations with the variables in this set, minimizing information loss. Histogram width and histogram minimum are strongly correlated, so we drop histogram minimum.
 
 ``` {r redundant_variables}
 
@@ -268,7 +277,7 @@ seed = 29
 set.seed(seed)
 
 #create an index and use it to randomly subset the data into testing and training sets
-partition_ind <- sample(2, nrow(normalized_data), replace = TRUE, prob = c(0.8, 0.2))
+partition_ind <- sample(2, nrow(normalized_data), replace = TRUE, prob = c(0.8, 0.2)) #Note that while the indices are sampled with replacement, cases are ultimately sampled without replacement (i.e. each case is placed in either the training or testing set, never both)
 svm_train <- normalized_data[partition_ind == 1,]
 svm_test <- normalized_data[partition_ind == 2,] 
 

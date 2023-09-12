@@ -1,0 +1,7 @@
+.Rhistory
+.Rprofile
+lib/
+lib-ext/
+lib-R/
+src/
+packrat/lib*/
