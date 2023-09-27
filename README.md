@@ -1,9 +1,3 @@
----
-title: "Imbalanced Data Tutorial"
-author: "Mitchel Daniel"
-date: "2023-08-24"
-output: html_document
----
 
 # __4 Techniques for Analyzing Handling Imbalanced Data with Machine Learning Classifiers in R__
 
@@ -32,7 +26,8 @@ library(forcats)
 imbalanced_hypothetical <- as.data.frame(c(rep('legitimate', 9800), rep('fraud', 200)))
 colnames(imbalanced_hypothetical) <- "transaction_status"
 
-ggplot(imbalanced_hypothetical, aes(x = fct_relevel(transaction_status, 'legitimate'), fill = transaction_status)) +
+ggplot(imbalanced_hypothetical, aes(x = fct_relevel(transaction_status, 'legitimate'), 
+                                    fill = transaction_status)) +
   geom_bar(show.legend = FALSE) +
   labs(x = 'transaction type',
        y = 'count') +
@@ -100,11 +95,13 @@ We can balance the dataset by randomly deleting cases from the majority class un
 
 library(tidyverse)
 
-undersampling_classes = c(rep('legitimate', 9800), rep('fraud', 200), rep('legitimate', 200), rep('fraud', 200))
+undersampling_classes = c(rep('legitimate', 9800), rep('fraud', 200), 
+                          rep('legitimate', 200), rep('fraud', 200))
 undersampling_technique = c(rep('original', 10000), rep('undersampled', 400))
 hypothetical_data_undersampling <- as.data.frame(cbind(undersampling_technique, undersampling_classes))
 
-ggplot(hypothetical_data_undersampling, aes(x = fct_relevel(undersampling_classes, 'legitimate'), fill = undersampling_classes)) +
+ggplot(hypothetical_data_undersampling, aes(x = fct_relevel(undersampling_classes, 'legitimate'), 
+                                            fill = undersampling_classes)) +
   geom_bar(show.legend = FALSE) +
   labs(x = 'transaction type',
        y = 'count') +
@@ -120,11 +117,13 @@ We can also balance the dataset by using resampling to increase the size of the 
 
 ``` {r resampling_diagram, echo = FALSE}
 
-resampling_classes = c(rep('legitimate', 9800), rep('fraud', 200), rep('legitimate', 9800), rep('fraud', 9800))
+resampling_classes = c(rep('legitimate', 9800), rep('fraud', 200), 
+                       rep('legitimate', 9800), rep('fraud', 9800))
 resampling_technique = c(rep('original', 10000), rep('oversampled (resampling)', 19600))
 hypothetical_data_resampling = as.data.frame(cbind(resampling_classes, resampling_technique))
 
-ggplot(hypothetical_data_resampling, aes(x = fct_relevel(resampling_classes, 'legitimate'), fill = resampling_classes)) +
+ggplot(hypothetical_data_resampling, aes(x = fct_relevel(resampling_classes, 'legitimate'), 
+                                         fill = resampling_classes)) +
   geom_bar(show.legend = FALSE) +
   labs(x = 'transaction type',
        y = 'count') +
@@ -155,7 +154,8 @@ SMOTEd_iris <- SMOTE(filtered_iris_imbalanced[,1:4], filtered_iris_imbalanced$Sp
 names(SMOTEd_iris$data)[names(SMOTEd_iris$data) == "class"] <- "Species"
 iris_combined <- rbind(filtered_iris_imbalanced, SMOTEd_iris$data)
 
-iris_combined$technique <- c(rep('original', nrow(filtered_iris_imbalanced)), rep('oversampled (SMOTE)', nrow(SMOTEd_iris$data)))
+iris_combined$technique <- c(rep('original', nrow(filtered_iris_imbalanced)), 
+                             rep('oversampled (SMOTE)', nrow(SMOTEd_iris$data)))
 
 ggplot(iris_combined, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
   geom_point(show.legend = FALSE) +
@@ -282,7 +282,7 @@ corrplot(corrs, method="color", col=col(200),
          type="upper", order="hclust", 
          addCoef.col = "black", # Add coefficient of correlation
          tl.col="black", tl.srt=45, #Text label color and rotation
-         #hide correlation coefficient on the principal diagonal
+         #hide correlation coefficients on the diagonal
          diag=FALSE,
          tl.cex = .75, #text label size
          number.cex=0.75, #number label size
@@ -345,9 +345,11 @@ data_no_class_2 <- svm_train %>%
   filter(fetal_health != 2)
 
 #We set the N argument equal to 5 times the size of the minority class, which achieves the desired ratio of 4:1
-undersampled_data_2_classes <- ovun.sample(fetal_health ~ ., data = data_no_class_2, 
+undersampled_data_2_classes <- ovun.sample(fetal_health ~ ., 
+                                           data = data_no_class_2, 
                                            N = 5 * table(svm_train$fetal_health)[3], 
-                                           seed = seed, method = "under")$data
+                                           seed = seed, 
+                                           method = "under")$data
 
 #add intermediate class back in
 data_intermediate_class <- svm_train %>%
@@ -384,8 +386,8 @@ undersampled_accur <- sum(undersampled_pred == svm_test$fetal_health) / length(s
 undersampled_accur
 
 #generate confusion matrix and calculate performance metrics
-undersampled_confusion_matrix <- confusionMatrix(undersampled_pred, svm_test$fetal_health, mode = "everything", 
-                                                        positive = "1")
+undersampled_confusion_matrix <- confusionMatrix(undersampled_pred, svm_test$fetal_health, 
+                                                 mode = "everything", positive = "1")
 undersampled_confusion_matrix$byClass[1:3,5:7]
 ```
 
@@ -410,7 +412,8 @@ data_no_class_1 <- svm_train %>%
 #oversample the minority class
 #set N equal to 1/4 the size of the majority class, plus the size of the intermediate class, resulting in 4:1 ratio between majority and minority class
 oversampled_minority <- ovun.sample(fetal_health ~ ., data = data_no_class_1,
-                                          N = table(svm_train$fetal_health)[1]/4 + table(svm_train$fetal_health)[2],
+                                          N = table(svm_train$fetal_health)[1]/4 +
+                                              table(svm_train$fetal_health)[2],
                                           seed = seed, method = "over")$data
 
 #oversample the intermediate class
@@ -450,8 +453,8 @@ oversampled_accur <- sum(oversampled_pred == svm_test$fetal_health) / length(svm
 oversampled_accur
 
 #calculate confusion matrix and a variety of performance metrics
-oversampled_confusion_matrix <- confusionMatrix(oversampled_pred, svm_test$fetal_health, mode = "everything", 
-                                                        positive = "1")
+oversampled_confusion_matrix <- confusionMatrix(oversampled_pred, svm_test$fetal_health, 
+                                                mode = "everything", positive = "1")
 oversampled_confusion_matrix$byClass[1:3,5:7]
 
 ```
@@ -478,7 +481,8 @@ svm_train$hist_tendency <- as.numeric(svm_train$hist_tendency)
 SMOTEd_minority <- SMOTE(svm_train[,-17], svm_train$fetal_health, K = 5, dup_size = 2)
 
 #We will double the size of the intermediate class to obtain a ratio slightly below 4:1
-SMOTEd_minority_and_interm <- SMOTE(SMOTEd_minority$data[,-17], SMOTEd_minority$data$class, K = 5, dup_size = 1)
+SMOTEd_minority_and_interm <- SMOTE(SMOTEd_minority$data[,-17], 
+                                    SMOTEd_minority$data$class, K = 5, dup_size = 1)
 
 #check that class sizes are now suitable
 table(SMOTEd_minority_and_interm$data$class)
@@ -572,8 +576,9 @@ cost_sensitive_accur <- sum(cost_sensitive_pred == svm_test$fetal_health) / leng
 cost_sensitive_accur
 
 #calculate confusion matrix and performance metrics
-cost_sensitive_confusion_matrix <- confusionMatrix(cost_sensitive_pred, svm_test$fetal_health, mode = "everything", 
-                                                        positive = "1")
+cost_sensitive_confusion_matrix <- confusionMatrix(cost_sensitive_pred, 
+                                                   svm_test$fetal_health, mode = "everything", 
+                                                   positive = "1")
 cost_sensitive_confusion_matrix$byClass[1:3,5:7]
 
 ```
