@@ -5,3 +5,4 @@ lib-ext/
 lib-R/
 src/
 packrat/lib*/
+.Rproj.user
