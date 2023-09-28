@@ -5,9 +5,13 @@ date: "2023-08-24"
 output: html_document
 ---
 
+[Back to Mitchel Daniel's portfolio](https://mitcheljamesdaniel.github.io/)
+
 # __4 Techniques for Analyzing Handling Imbalanced Data with Machine Learning Classifiers in R__
 
 In this tutorial, I'll discuss what it means for a dataset to be imbalanced and why this is a problem for machine learning classifiers. Then, I'll present 4 commonly used techniques for effectively training machine learning classifiers on imbalanced data, including how to implement these techniques in R and the pros and cons of each. My goal is to provide a primer for getting started analyzing imbalanced, so I will prioritize the application of these techniques over theory.
+
+If you're interested, you can check out the [code and data](https://github.com/mitcheljamesdaniel/Imbalanced_learning_R) underlying this tutorial to see how it all works for yourself.
 
 ## What are Classification Tasks?
 
@@ -16,7 +20,7 @@ Classification is a widely encountered problem in data science. In a classificat
 ## What is Imbalanced Data, and Why Does it Matter?
 
 A dataset is imbalanced if certain classes are much more common than others. Imagine a bank checking their records of 10,000 transactions and finding that 200 of them (just 2%) are fraudulent. In this example, "no fraud" is the majority class, while "fraud" is the minority class. Those cases of fraud are very important, but the fact that they are rare within the data can make them difficult to predict. 
-
+ 
 ```{r setup, include = FALSE}
 library(knitr)
 library(rmarkdown)
@@ -36,7 +40,7 @@ ggplot(imbalanced_hypothetical, aes(x = fct_relevel(transaction_status, 'legitim
   geom_bar(show.legend = FALSE) +
   labs(x = 'transaction type',
        y = 'count') +
-  theme_classic()
+  theme_classic(base_size = 15)
 
 ```
 
@@ -110,7 +114,7 @@ ggplot(hypothetical_data_undersampling, aes(x = fct_relevel(undersampling_classe
   geom_bar(show.legend = FALSE) +
   labs(x = 'transaction type',
        y = 'count') +
-  theme_classic() +
+  theme_classic(base_size = 15) +
   facet_wrap(~ undersampling_technique)
 
 ```
@@ -132,7 +136,7 @@ ggplot(hypothetical_data_resampling, aes(x = fct_relevel(resampling_classes, 'le
   geom_bar(show.legend = FALSE) +
   labs(x = 'transaction type',
        y = 'count') +
-  theme_classic() +
+  theme_classic(base_size = 15) +
   facet_wrap(~ resampling_technique)
 
 ```
@@ -163,11 +167,11 @@ iris_combined$technique <- c(rep('original', nrow(filtered_iris_imbalanced)),
                              rep('oversampled (SMOTE)', nrow(SMOTEd_iris$data)))
 
 ggplot(iris_combined, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) +
-  geom_point(show.legend = FALSE) +
+  geom_point(size = 2, show.legend = FALSE) +
   facet_wrap(~ technique) +
   labs(x = 'feature a',
        y = 'feature b') +
-  theme_classic()
+  theme_classic(base_size = 15)
 
 ```
 
@@ -596,7 +600,7 @@ In general, there is no one best technique for dealing with imbalanced data. The
 
 ## Conclusion
 
-I hope this article gave you a useful overview of some of the common techniques for working with imbalanced data, how to implement these techniques in R, and how to compare their impacts on model performance. The code underlying this tutorial is in the Imbalanced_data_explanatory_project.RMD file, should you want to check out how it all works yourself.
+Imbalanced datasets are common and pose important challenges to developing useful models. I hope this article gave you a useful overview of some of the common techniques for working with imbalanced data, how to implement these techniques in R, and how to compare their impacts on model performance.
 
 ## References
 
