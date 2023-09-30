@@ -7,7 +7,7 @@ output: html_document
 
 [Back to Mitchel Daniel's portfolio](https://mitcheljamesdaniel.github.io/)
 
-# __4 Techniques for Analyzing Handling Imbalanced Data with Machine Learning Classifiers in R__
+# __Four Techniques for Analyzing Handling Imbalanced Data with Machine Learning Classifiers in R__
 
 In this tutorial, I'll discuss what it means for a dataset to be imbalanced and why this is a problem for machine learning classifiers. Then, I'll present 4 commonly used techniques for effectively training machine learning classifiers on imbalanced data, including how to implement these techniques in R and the pros and cons of each. My goal is to provide a primer for getting started analyzing imbalanced, so I will prioritize the application of these techniques over theory.
 
@@ -183,7 +183,7 @@ Cost-sensitive learning consists of adjusting the cost function to more greatly 
 
 ## A Worked Example
 
-We now have several options for minimizing the biass associated with analyzing imbalanced data. Next, let's work through how to implement these techniques in R, and how to decide which technique leads to the best results. The classifier that we will use in this example is Support Vector Machine (SVM), since it is a versatile and widely-used machine learning classifier that support cost-sensitive learning in R. If you are interested in learning more about how SVM works and when to use it, check out my tutorial on [machine learning classifiers](https://github.com/mitcheljamesdaniel/Classifiers_in_R) where I compare the advantages and limitations of several widely-used machine learning classifiers.
+We now have several options for minimizing the biass associated with analyzing imbalanced data. Next, let's work through how to implement these techniques in R, and how to decide which technique leads to the best results. The classifier that we will use in this example is Support Vector Machine (SVM), since it is a versatile and widely-used machine learning classifier that support cost-sensitive learning in R. If you are interested in learning more about how SVM works and when to use it, check out my tutorial on [machine learning classifiers](https://mitcheljamesdaniel.github.io/projects/Classifiers_Tutorial/index.html) where I compare the advantages and limitations of several widely-used machine learning classifiers.
 
 We will work with the fetal health dataset from Ayres de Campos et al. (2000). The target variable in this dataset is fetal heart health, which contains three classes: normal, suspect, and pathological. There are 21 different measurements taken from Cardiotocograms that we can use as features. 
 
