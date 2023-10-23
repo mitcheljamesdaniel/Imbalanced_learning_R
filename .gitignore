@@ -1,8 +1,9 @@
 .Rhistory
-.Rprofile
-lib/
-lib-ext/
-lib-R/
-src/
-packrat/lib*/
 .Rproj.user
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
