@@ -11,8 +11,8 @@ Instructions
 -----------------------
 
 * Clone this repo to your computer
-* Open the R project, Classifiers.Rproj
-* Inside the R project, open Classifiers.Rmd
+* Open the R project, Imbalanced_Data.Rproj
+* Inside the R project, open Imbalanced_data_tutorial.Rmd
 * Use renv to recreate the project's environment:
     * renv will automatically bootstrap itself when you open the project
     * you can use renv::status() to see what packages (and versions) must be installed for the code to run
