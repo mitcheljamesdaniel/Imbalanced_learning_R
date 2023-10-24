@@ -7,7 +7,7 @@ You can see the tutorial itself <a href=https://mitcheljamesdaniel.github.io/pro
 
 Below are the instructions for running the underlying R code.
 
-Setup
+Instructions
 -----------------------
 
 * Clone this repo to your computer
